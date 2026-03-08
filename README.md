@@ -1,4 +1,4 @@
-PROYECTO PELICULAS APLICACIÓN WEB
+# PROYECTO PELICULAS APLICACIÓN WEB
 
 
 ## Estructura del proyecto 
@@ -37,7 +37,7 @@ PRUEBA/
 
 ## All Endpoints
 
-### 🎭 Géneros — `/api/generos`
+### Géneros — `/api/generos`
 | Method | URL | Description |
 |--------|-----|-------------|
 | GET | `/api/generos` | Listar todos |
