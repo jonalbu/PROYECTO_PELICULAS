@@ -167,3 +167,80 @@ PROYECTO_PELICULAS/
 2. Setear `Content-Type: application/json` header para POST/PUT
 3. Orden recomendado:
    - Crear Tipo → Crear Genero → Crear Director → Crear Productora → Crear Media
+
+
+
+
+**Dependencies:**
+- `express` – HTTP server & routing
+- `mongoose` – MongoDB ORM
+- `dotenv` – environment variables
+- `cors` – Cross-Origin support
+
+---
+<br>
+<br>
+
+
+# Diseño de la base de datos (MongoDB Collections)
+
+```
+generos        → Genre
+directores     → Director
+productoras    → ProductionCompany
+tipos          → Type
+medias         → Media (references Genre, Director, ProductionCompany, Type)
+```
+
+#### Genero Schema
+| Field | Type | Notes |
+|-------|------|-------|
+| nombre | String | required |
+| estado | String | enum: ['Activo','Inactivo'], default: 'Activo' |
+| descripcion | String | |
+| fechaCreacion | Date | default: now |
+| fechaActualizacion | Date | |
+
+#### Director Schema
+| Field | Type | Notes |
+|-------|------|-------|
+| nombres | String | required |
+| estado | String | enum: ['Activo','Inactivo'], default: 'Activo' |
+| fechaCreacion | Date | default: now |
+| fechaActualizacion | Date | |
+
+#### Productora Schema
+| Field | Type | Notes |
+|-------|------|-------|
+| nombre | String | required |
+| estado | String | enum: ['Activo','Inactivo'], default: 'Activo' |
+| slogan | String | |
+| descripcion | String | |
+| fechaCreacion | Date | default: now |
+| fechaActualizacion | Date | |
+
+#### Tipo Schema
+| Field | Type | Notes |
+|-------|------|-------|
+| nombre | String | required (e.g. 'Película', 'Serie') |
+| descripcion | String | |
+| fechaCreacion | Date | default: now |
+| fechaActualizacion | Date | |
+
+#### Media Schema
+| Field | Type | Notes |
+|-------|------|-------|
+| serial | String | unique, required |
+| titulo | String | required |
+| sinopsis | String | |
+| url | String | unique, required |
+| imagenPortada | String | |
+| anioEstreno | Number | |
+| genero | ObjectId | ref: 'Genero', must be Activo |
+| director | ObjectId | ref: 'Director', must be Activo |
+| productora | ObjectId | ref: 'Productora', must be Activo |
+| tipo | ObjectId | ref: 'Tipo' |
+| fechaCreacion | Date | default: now |
+| fechaActualizacion | Date | |
+
+---
