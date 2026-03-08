@@ -1,6 +1,6 @@
 const Director = require("../models/Director");
 
-// GET all directors
+// GET todos los directores
 const getDirectores = async (req, res) => {
   try {
     const directores = await Director.find().sort({ fechaCreacion: -1 });
@@ -10,7 +10,7 @@ const getDirectores = async (req, res) => {
   }
 };
 
-// GET only active directors
+// GET solo los directores activos
 const getDirectoresActivos = async (req, res) => {
   try {
     const directores = await Director.find({ estado: "Activo" }).sort({
@@ -22,7 +22,7 @@ const getDirectoresActivos = async (req, res) => {
   }
 };
 
-// GET director by ID
+// GET director por ID
 const getDirectorById = async (req, res) => {
   try {
     const director = await Director.findById(req.params.id);
@@ -37,7 +37,7 @@ const getDirectorById = async (req, res) => {
   }
 };
 
-// POST create director
+// POST crear director
 const createDirector = async (req, res) => {
   try {
     const { nombres, estado } = req.body;
@@ -49,7 +49,7 @@ const createDirector = async (req, res) => {
   }
 };
 
-// PUT update director
+// PUT actualizar director
 const updateDirector = async (req, res) => {
   try {
     const { nombres, estado } = req.body;

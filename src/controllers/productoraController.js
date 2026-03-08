@@ -1,6 +1,6 @@
 const Productora = require("../models/Productora");
 
-// GET all producers
+// GET todas las productoras
 const getProductoras = async (req, res) => {
   try {
     const productoras = await Productora.find().sort({ fechaCreacion: -1 });
@@ -10,7 +10,7 @@ const getProductoras = async (req, res) => {
   }
 };
 
-// GET only active producers
+// GET solo las productoras activas
 const getProductorasActivas = async (req, res) => {
   try {
     const productoras = await Productora.find({ estado: "Activo" }).sort({
@@ -22,7 +22,7 @@ const getProductorasActivas = async (req, res) => {
   }
 };
 
-// GET producer by ID
+// GET productora por ID
 const getProductoraById = async (req, res) => {
   try {
     const productora = await Productora.findById(req.params.id);
@@ -37,7 +37,7 @@ const getProductoraById = async (req, res) => {
   }
 };
 
-// POST create producer
+// POST crear productora
 const createProductora = async (req, res) => {
   try {
     const { nombre, estado, slogan, descripcion } = req.body;
@@ -49,7 +49,7 @@ const createProductora = async (req, res) => {
   }
 };
 
-// PUT update producer
+// PUT actualizar productora
 const updateProductora = async (req, res) => {
   try {
     const { nombre, estado, slogan, descripcion } = req.body;
@@ -69,7 +69,7 @@ const updateProductora = async (req, res) => {
   }
 };
 
-// DELETE producer
+// DELETE productora
 const deleteProductora = async (req, res) => {
   try {
     const productora = await Productora.findByIdAndDelete(req.params.id);

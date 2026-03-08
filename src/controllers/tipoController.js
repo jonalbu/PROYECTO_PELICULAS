@@ -1,6 +1,6 @@
 const Tipo = require("../models/Tipo");
 
-// GET all types
+// GET todos los tipos
 const getTipos = async (req, res) => {
   try {
     const tipos = await Tipo.find().sort({ fechaCreacion: -1 });
@@ -10,7 +10,7 @@ const getTipos = async (req, res) => {
   }
 };
 
-// GET type by ID
+// GET tipo por ID
 const getTipoById = async (req, res) => {
   try {
     const tipo = await Tipo.findById(req.params.id);
@@ -23,7 +23,7 @@ const getTipoById = async (req, res) => {
   }
 };
 
-// POST create type
+// POST crear tipo
 const createTipo = async (req, res) => {
   try {
     const { nombre, descripcion } = req.body;
@@ -35,7 +35,7 @@ const createTipo = async (req, res) => {
   }
 };
 
-// PUT update type
+// PUT actualizar tipo
 const updateTipo = async (req, res) => {
   try {
     const { nombre, descripcion } = req.body;
@@ -53,7 +53,7 @@ const updateTipo = async (req, res) => {
   }
 };
 
-// DELETE type
+// DELETE tipo
 const deleteTipo = async (req, res) => {
   try {
     const tipo = await Tipo.findByIdAndDelete(req.params.id);

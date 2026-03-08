@@ -1,6 +1,6 @@
 const Genero = require("../models/Genero");
 
-// GET all genres
+// GET todos los géneros
 const getGeneros = async (req, res) => {
   try {
     const generos = await Genero.find().sort({ fechaCreacion: -1 });
@@ -10,7 +10,7 @@ const getGeneros = async (req, res) => {
   }
 };
 
-// GET only active genres
+// GET solo los géneros activos
 const getGenerosActivos = async (req, res) => {
   try {
     const generos = await Genero.find({ estado: "Activo" }).sort({ nombre: 1 });
@@ -20,7 +20,7 @@ const getGenerosActivos = async (req, res) => {
   }
 };
 
-// GET genre by ID
+// GET género por ID
 const getGeneroById = async (req, res) => {
   try {
     const genero = await Genero.findById(req.params.id);
@@ -35,7 +35,7 @@ const getGeneroById = async (req, res) => {
   }
 };
 
-// POST create genre
+// POST crear género
 const createGenero = async (req, res) => {
   try {
     const { nombre, estado, descripcion } = req.body;
@@ -47,7 +47,7 @@ const createGenero = async (req, res) => {
   }
 };
 
-// PUT update genre
+// PUT actualizar género
 const updateGenero = async (req, res) => {
   try {
     const { nombre, estado, descripcion } = req.body;
@@ -67,7 +67,7 @@ const updateGenero = async (req, res) => {
   }
 };
 
-// DELETE genre
+// DELETE género
 const deleteGenero = async (req, res) => {
   try {
     const genero = await Genero.findByIdAndDelete(req.params.id);

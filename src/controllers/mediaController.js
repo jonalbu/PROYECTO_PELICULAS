@@ -12,7 +12,7 @@ const getMedias = async (req, res) => {
       .populate("director", "nombres estado")
       .populate("productora", "nombre estado")
       .populate("tipo", "nombre")
-      .sort({ fechaCreacion: -1 });
+      .sort({ fechaCreacion: -1 }); // Ordenar por fecha de creación
     res.json({ ok: true, data: medias });
   } catch (error) {
     res.status(500).json({ ok: false, mensaje: error.message });
