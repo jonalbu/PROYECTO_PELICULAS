@@ -4,7 +4,7 @@ const Director = require("../models/Director");
 const Productora = require("../models/Productora");
 const Tipo = require("../models/Tipo");
 
-// GET all media (populated)
+// GET todos los media (populated)
 const getMedias = async (req, res) => {
   try {
     const medias = await Media.find()
@@ -19,7 +19,7 @@ const getMedias = async (req, res) => {
   }
 };
 
-// GET media by ID (populated)
+// GET media por ID (populated)
 const getMediaById = async (req, res) => {
   try {
     const media = await Media.findById(req.params.id)
@@ -38,7 +38,8 @@ const getMediaById = async (req, res) => {
   }
 };
 
-// POST create media (validates that genre, director, and producer are Active)
+// POST crear media (valida que el género, director y productora estén Activos)
+// Acepta nombres en lugar de ObjectIds para genero, director, productora y tipo
 const createMedia = async (req, res) => {
   try {
     const {
@@ -54,49 +55,48 @@ const createMedia = async (req, res) => {
       tipo,
     } = req.body;
 
-    // Validate genre is Active
-    const generoDoc = await Genero.findById(genero);
+    // Validar que el género esté Activo (buscar por nombre)
+    const generoDoc = await Genero.findOne({ nombre: genero });
     if (!generoDoc)
       return res
         .status(404)
-        .json({ ok: false, mensaje: "Género no encontrado" });
+        .json({ ok: false, mensaje: `Género "${genero}" no encontrado` });
     if (generoDoc.estado !== "Activo")
       return res
         .status(400)
         .json({ ok: false, mensaje: "El género seleccionado no está Activo" });
 
-    // Validate director is Active
-    const directorDoc = await Director.findById(director);
+    // Validar que el director esté Activo (buscar por nombres)
+    const directorDoc = await Director.findOne({ nombres: director });
     if (!directorDoc)
       return res
         .status(404)
-        .json({ ok: false, mensaje: "Director no encontrado" });
+        .json({ ok: false, mensaje: `Director "${director}" no encontrado` });
     if (directorDoc.estado !== "Activo")
-      return res
-        .status(400)
-        .json({
-          ok: false,
-          mensaje: "El director seleccionado no está Activo",
-        });
+      return res.status(400).json({
+        ok: false,
+        mensaje: "El director seleccionado no está Activo",
+      });
 
-    // Validate producer is Active
-    const productoraDoc = await Productora.findById(productora);
+    // Validar que la productora esté Activa (buscar por nombre)
+    const productoraDoc = await Productora.findOne({ nombre: productora });
     if (!productoraDoc)
+      return res.status(404).json({
+        ok: false,
+        mensaje: `Productora "${productora}" no encontrada`,
+      });
+    if (productoraDoc.estado !== "Activo")
+      return res.status(400).json({
+        ok: false,
+        mensaje: "La productora seleccionada no está Activa",
+      });
+
+    // Validar que el tipo exista (buscar por nombre)
+    const tipoDoc = await Tipo.findOne({ nombre: tipo });
+    if (!tipoDoc)
       return res
         .status(404)
-        .json({ ok: false, mensaje: "Productora no encontrada" });
-    if (productoraDoc.estado !== "Activo")
-      return res
-        .status(400)
-        .json({
-          ok: false,
-          mensaje: "La productora seleccionada no está Activa",
-        });
-
-    // Validate tipo exists
-    const tipoDoc = await Tipo.findById(tipo);
-    if (!tipoDoc)
-      return res.status(404).json({ ok: false, mensaje: "Tipo no encontrado" });
+        .json({ ok: false, mensaje: `Tipo "${tipo}" no encontrado` });
 
     const media = new Media({
       serial,
@@ -105,10 +105,10 @@ const createMedia = async (req, res) => {
       url,
       imagenPortada,
       anioEstreno,
-      genero,
-      director,
-      productora,
-      tipo,
+      genero: generoDoc._id,
+      director: directorDoc._id,
+      productora: productoraDoc._id,
+      tipo: tipoDoc._id,
     });
     const mediaGuardada = await media.save();
 
@@ -125,7 +125,8 @@ const createMedia = async (req, res) => {
   }
 };
 
-// PUT update media (validates Active status)
+// PUT actualizar media (valida que el género, director y productora estén Activos)
+// Acepta nombres en lugar de ObjectIds para genero, director, productora y tipo
 const updateMedia = async (req, res) => {
   try {
     const {
@@ -141,79 +142,75 @@ const updateMedia = async (req, res) => {
       tipo,
     } = req.body;
 
-    // Validate genre is Active (if provided)
+    const updateData = {
+      serial,
+      titulo,
+      sinopsis,
+      url,
+      imagenPortada,
+      anioEstreno,
+    };
+
+    // Validar que el género esté Activo (si se proporciona)
     if (genero) {
-      const generoDoc = await Genero.findById(genero);
+      const generoDoc = await Genero.findOne({ nombre: genero });
       if (!generoDoc)
         return res
           .status(404)
-          .json({ ok: false, mensaje: "Género no encontrado" });
+          .json({ ok: false, mensaje: `Género "${genero}" no encontrado` });
       if (generoDoc.estado !== "Activo")
-        return res
-          .status(400)
-          .json({
-            ok: false,
-            mensaje: "El género seleccionado no está Activo",
-          });
+        return res.status(400).json({
+          ok: false,
+          mensaje: "El género seleccionado no está Activo",
+        });
+      updateData.genero = generoDoc._id;
     }
 
-    // Validate director is Active (if provided)
+    // Validar que el director esté Activo (si se proporciona)
     if (director) {
-      const directorDoc = await Director.findById(director);
+      const directorDoc = await Director.findOne({ nombres: director });
       if (!directorDoc)
         return res
           .status(404)
-          .json({ ok: false, mensaje: "Director no encontrado" });
+          .json({ ok: false, mensaje: `Director "${director}" no encontrado` });
       if (directorDoc.estado !== "Activo")
-        return res
-          .status(400)
-          .json({
-            ok: false,
-            mensaje: "El director seleccionado no está Activo",
-          });
+        return res.status(400).json({
+          ok: false,
+          mensaje: "El director seleccionado no está Activo",
+        });
+      updateData.director = directorDoc._id;
     }
 
-    // Validate producer is Active (if provided)
+    // Validar que la productora esté Activa (si se proporciona)
     if (productora) {
-      const productoraDoc = await Productora.findById(productora);
+      const productoraDoc = await Productora.findOne({ nombre: productora });
       if (!productoraDoc)
-        return res
-          .status(404)
-          .json({ ok: false, mensaje: "Productora no encontrada" });
+        return res.status(404).json({
+          ok: false,
+          mensaje: `Productora "${productora}" no encontrada`,
+        });
       if (productoraDoc.estado !== "Activo")
-        return res
-          .status(400)
-          .json({
-            ok: false,
-            mensaje: "La productora seleccionada no está Activa",
-          });
+        return res.status(400).json({
+          ok: false,
+          mensaje: "La productora seleccionada no está Activa",
+        });
+      updateData.productora = productoraDoc._id;
     }
 
-    // Validate tipo exists (if provided)
+    // Validar que el tipo exista (si se proporciona)
     if (tipo) {
-      const tipoDoc = await Tipo.findById(tipo);
+      const tipoDoc = await Tipo.findOne({ nombre: tipo });
       if (!tipoDoc)
         return res
           .status(404)
-          .json({ ok: false, mensaje: "Tipo no encontrado" });
+          .json({ ok: false, mensaje: `Tipo "${tipo}" no encontrado` });
+      updateData.tipo = tipoDoc._id;
     }
 
-    const media = await Media.findByIdAndUpdate(
-      req.params.id,
-      {
-        serial,
-        titulo,
-        sinopsis,
-        url,
-        imagenPortada,
-        anioEstreno,
-        genero,
-        director,
-        productora,
-        tipo,
-      },
-      { new: true, runValidators: true },
-    )
+    const media = await Media.findByIdAndUpdate(req.params.id, updateData, {
+      new: true, // Devuelve la media o documento actualizado
+      runValidators: true, // Valida los campos antes de guardar
+    })
       .populate("genero", "nombre estado")
       .populate("director", "nombres estado")
       .populate("productora", "nombre estado")
@@ -231,7 +228,7 @@ const updateMedia = async (req, res) => {
   }
 };
 
-// DELETE media
+// DELETE media por ID
 const deleteMedia = async (req, res) => {
   try {
     const media = await Media.findByIdAndDelete(req.params.id);

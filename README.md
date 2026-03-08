@@ -2,8 +2,8 @@
 
 Una API REST completamente funcional construida con Node.js + Express + MongoDB (Mongoose) que implementa los 5 modulos o entidades de la aplicacion para las peliculas y series.
 
+## Estructura del proyecto
 
-## Estructura del proyecto 
 ```
 PROYECTO_PELICULAS/
 ├── .env                          ← Cadena de conexión a la base de datos y puerto
@@ -36,20 +36,33 @@ PROYECTO_PELICULAS/
 
 ---
 
+## Como ejecutar el proyecto
+
+```bash
+# Desarrollo (auto-restart on changes)
+npm run dev
+
+# Producción
+npm start
+```
+
+---
 
 ## Endpoints
 
 ### Géneros — `/api/generos`
-| Method | URL | Description |
-|--------|-----|-------------|
-| GET | `/api/generos` | Listar todos |
-| GET | `/api/generos/activos` | Solo activos |
-| GET | `/api/generos/:id` | Por ID |
-| POST | `/api/generos` | Crear |
-| PUT | `/api/generos/:id` | Actualizar |
-| DELETE | `/api/generos/:id` | Eliminar |
+
+| Method | URL                    | Description  |
+| ------ | ---------------------- | ------------ |
+| GET    | `/api/generos`         | Listar todos |
+| GET    | `/api/generos/activos` | Solo activos |
+| GET    | `/api/generos/:id`     | Por ID       |
+| POST   | `/api/generos`         | Crear        |
+| PUT    | `/api/generos/:id`     | Actualizar   |
+| DELETE | `/api/generos/:id`     | Eliminar     |
 
 **Cuerpo de la petición POST:**
+
 ```json
 {
   "nombre": "Acción",
@@ -61,16 +74,18 @@ PROYECTO_PELICULAS/
 ---
 
 ### Directores — `/api/directores`
-| Method | URL | Description |
-|--------|-----|-------------|
-| GET | `/api/directores` | Listar todos |
-| GET | `/api/directores/activos` | Solo activos |
-| GET | `/api/directores/:id` | Por ID |
-| POST | `/api/directores` | Crear |
-| PUT | `/api/directores/:id` | Actualizar |
-| DELETE | `/api/directores/:id` | Eliminar |
+
+| Method | URL                       | Description  |
+| ------ | ------------------------- | ------------ |
+| GET    | `/api/directores`         | Listar todos |
+| GET    | `/api/directores/activos` | Solo activos |
+| GET    | `/api/directores/:id`     | Por ID       |
+| POST   | `/api/directores`         | Crear        |
+| PUT    | `/api/directores/:id`     | Actualizar   |
+| DELETE | `/api/directores/:id`     | Eliminar     |
 
 **Cuerpo de la petición POST:**
+
 ```json
 {
   "nombres": "Christopher Nolan",
@@ -81,16 +96,18 @@ PROYECTO_PELICULAS/
 ---
 
 ### Productoras — `/api/productoras`
-| Method | URL | Description |
-|--------|-----|-------------|
-| GET | `/api/productoras` | Listar todas |
-| GET | `/api/productoras/activas` | Solo activas |
-| GET | `/api/productoras/:id` | Por ID |
-| POST | `/api/productoras` | Crear |
-| PUT | `/api/productoras/:id` | Actualizar |
-| DELETE | `/api/productoras/:id` | Eliminar |
+
+| Method | URL                        | Description  |
+| ------ | -------------------------- | ------------ |
+| GET    | `/api/productoras`         | Listar todas |
+| GET    | `/api/productoras/activas` | Solo activas |
+| GET    | `/api/productoras/:id`     | Por ID       |
+| POST   | `/api/productoras`         | Crear        |
+| PUT    | `/api/productoras/:id`     | Actualizar   |
+| DELETE | `/api/productoras/:id`     | Eliminar     |
 
 **Cuerpo de la petición POST:**
+
 ```json
 {
   "nombre": "Warner Bros",
@@ -103,15 +120,17 @@ PROYECTO_PELICULAS/
 ---
 
 ### Tipos — `/api/tipos`
-| Method | URL | Description |
-|--------|-----|-------------|
-| GET | `/api/tipos` | Listar todos |
-| GET | `/api/tipos/:id` | Por ID |
-| POST | `/api/tipos` | Crear |
-| PUT | `/api/tipos/:id` | Actualizar |
-| DELETE | `/api/tipos/:id` | Eliminar |
+
+| Method | URL              | Description  |
+| ------ | ---------------- | ------------ |
+| GET    | `/api/tipos`     | Listar todos |
+| GET    | `/api/tipos/:id` | Por ID       |
+| POST   | `/api/tipos`     | Crear        |
+| PUT    | `/api/tipos/:id` | Actualizar   |
+| DELETE | `/api/tipos/:id` | Eliminar     |
 
 **Cuerpo de la petición POST:**
+
 ```json
 {
   "nombre": "Película",
@@ -122,15 +141,17 @@ PROYECTO_PELICULAS/
 ---
 
 ### Medias — `/api/medias`
-| Method | URL | Description |
-|--------|-----|-------------|
-| GET | `/api/medias` | Listar todas (con refs pobladas) |
-| GET | `/api/medias/:id` | Por ID |
-| POST | `/api/medias` | Crear |
-| PUT | `/api/medias/:id` | Actualizar |
-| DELETE | `/api/medias/:id` | Eliminar |
+
+| Method | URL               | Description                      |
+| ------ | ----------------- | -------------------------------- |
+| GET    | `/api/medias`     | Listar todas (con refs pobladas) |
+| GET    | `/api/medias/:id` | Por ID                           |
+| POST   | `/api/medias`     | Crear                            |
+| PUT    | `/api/medias/:id` | Actualizar                       |
+| DELETE | `/api/medias/:id` | Eliminar                         |
 
 **Cuerpo de la petición POST:**
+
 ```json
 {
   "serial": "PELICULA-001",
@@ -139,25 +160,25 @@ PROYECTO_PELICULAS/
   "url": "https://example.com/inception",
   "imagenPortada": "https://example.com/inception.jpg",
   "anioEstreno": 2010,
-  "genero": "<ID_GENERO_ACTIVO>",
-  "director": "<ID_DIRECTOR_ACTIVO>",
-  "productora": "<ID_PRODUCTORA_ACTIVA>",
-  "tipo": "<ID_TIPO>"
+  "genero": "Acción",
+  "director": "Christopher Nolan",
+  "productora": "Warner Bros",
+  "tipo": "Película"
 }
 ```
 
-> **Validación:** El módulo Media valida que el Género, Director y Productora referenciados estén en estado **Activo**. Si alguno está *Inactivo*, devuelve `400 Bad Request`.
+> **Validación:** Los campos `genero`, `director`, `productora` y `tipo` se envían como **nombres** (no ObjectIds). El servidor los busca internamente y valida que el Género, Director y Productora estén en estado **Activo**. Si no se encuentran o están _Inactivos_, devuelve `404` o `400 Bad Request` respectivamente.
 
 ---
 
 ## Pruebas de verificación
 
-| Test | Result |
-|------|--------|
-| `GET /` — Root endpoint | 200 OK |
-| `POST /api/generos` — Create "Acción" | 201 Created |
-| `GET /api/generos` — List all genres | 200 OK, data returned |
-| MongoDB connection | Connected to `localhost` |
+| Test                                  | Result                   |
+| ------------------------------------- | ------------------------ |
+| `GET /` — Root endpoint               | 200 OK                   |
+| `POST /api/generos` — Create "Acción" | 201 Created              |
+| `GET /api/generos` — List all genres  | 200 OK, data returned    |
+| MongoDB connection                    | Connected to `localhost` |
 
 ---
 
@@ -168,19 +189,17 @@ PROYECTO_PELICULAS/
 3. Orden recomendado:
    - Crear Tipo → Crear Genero → Crear Director → Crear Productora → Crear Media
 
-
-
-
 **Dependencies:**
+
 - `express` – HTTP server & routing
 - `mongoose` – MongoDB ORM
 - `dotenv` – environment variables
 - `cors` – Cross-Origin support
 
 ---
-<br>
-<br>
 
+<br>
+<br>
 
 # Diseño de la base de datos (MongoDB Collections)
 
@@ -193,54 +212,59 @@ medias         → Media (references Genre, Director, ProductionCompany, Type)
 ```
 
 #### Genero Schema
-| Field | Type | Notes |
-|-------|------|-------|
-| nombre | String | required |
-| estado | String | enum: ['Activo','Inactivo'], default: 'Activo' |
-| descripcion | String | |
-| fechaCreacion | Date | default: now |
-| fechaActualizacion | Date | |
+
+| Field              | Type   | Notes                                          |
+| ------------------ | ------ | ---------------------------------------------- |
+| nombre             | String | required                                       |
+| estado             | String | enum: ['Activo','Inactivo'], default: 'Activo' |
+| descripcion        | String |                                                |
+| fechaCreacion      | Date   | default: now                                   |
+| fechaActualizacion | Date   |                                                |
 
 #### Director Schema
-| Field | Type | Notes |
-|-------|------|-------|
-| nombres | String | required |
-| estado | String | enum: ['Activo','Inactivo'], default: 'Activo' |
-| fechaCreacion | Date | default: now |
-| fechaActualizacion | Date | |
+
+| Field              | Type   | Notes                                          |
+| ------------------ | ------ | ---------------------------------------------- |
+| nombres            | String | required                                       |
+| estado             | String | enum: ['Activo','Inactivo'], default: 'Activo' |
+| fechaCreacion      | Date   | default: now                                   |
+| fechaActualizacion | Date   |                                                |
 
 #### Productora Schema
-| Field | Type | Notes |
-|-------|------|-------|
-| nombre | String | required |
-| estado | String | enum: ['Activo','Inactivo'], default: 'Activo' |
-| slogan | String | |
-| descripcion | String | |
-| fechaCreacion | Date | default: now |
-| fechaActualizacion | Date | |
+
+| Field              | Type   | Notes                                          |
+| ------------------ | ------ | ---------------------------------------------- |
+| nombre             | String | required                                       |
+| estado             | String | enum: ['Activo','Inactivo'], default: 'Activo' |
+| slogan             | String |                                                |
+| descripcion        | String |                                                |
+| fechaCreacion      | Date   | default: now                                   |
+| fechaActualizacion | Date   |                                                |
 
 #### Tipo Schema
-| Field | Type | Notes |
-|-------|------|-------|
-| nombre | String | required (e.g. 'Película', 'Serie') |
-| descripcion | String | |
-| fechaCreacion | Date | default: now |
-| fechaActualizacion | Date | |
+
+| Field              | Type   | Notes                               |
+| ------------------ | ------ | ----------------------------------- |
+| nombre             | String | required (e.g. 'Película', 'Serie') |
+| descripcion        | String |                                     |
+| fechaCreacion      | Date   | default: now                        |
+| fechaActualizacion | Date   |                                     |
 
 #### Media Schema
-| Field | Type | Notes |
-|-------|------|-------|
-| serial | String | unique, required |
-| titulo | String | required |
-| sinopsis | String | |
-| url | String | unique, required |
-| imagenPortada | String | |
-| anioEstreno | Number | |
-| genero | ObjectId | ref: 'Genero', must be Activo |
-| director | ObjectId | ref: 'Director', must be Activo |
-| productora | ObjectId | ref: 'Productora', must be Activo |
-| tipo | ObjectId | ref: 'Tipo' |
-| fechaCreacion | Date | default: now |
-| fechaActualizacion | Date | |
+
+| Field              | Type     | Notes                             |
+| ------------------ | -------- | --------------------------------- |
+| serial             | String   | unique, required                  |
+| titulo             | String   | required                          |
+| sinopsis           | String   |                                   |
+| url                | String   | unique, required                  |
+| imagenPortada      | String   |                                   |
+| anioEstreno        | Number   |                                   |
+| genero             | ObjectId | ref: 'Genero', must be Activo     |
+| director           | ObjectId | ref: 'Director', must be Activo   |
+| productora         | ObjectId | ref: 'Productora', must be Activo |
+| tipo               | ObjectId | ref: 'Tipo'                       |
+| fechaCreacion      | Date     | default: now                      |
+| fechaActualizacion | Date     |                                   |
 
 ---
